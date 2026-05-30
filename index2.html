@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gift Chidewu — Mechanical Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0c0f; --bg2:#0f1318; --bg3:#151a22; --surface:#1a2030;
+    --border:#1e2a3a; --accent:#3b82f6; --accent2:#06b6d4;
+    --text:#e8edf5; --muted:#6b7a90; --dim:#2a3545;
+    --mono:'Space Mono',monospace; --sans:'DM Sans',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.35;pointer-events:none;z-index:0}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 6vw;height:60px;background:rgba(10,12,15,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .nav-logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.04em;cursor:pointer}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+
+  /* SHARED */
+  .section-header{display:flex;align-items:center;gap:16px;margin-bottom:3.5rem}
+  .section-num{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em}
+  .section-title{font-family:var(--mono);font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--text);letter-spacing:-.01em}
+  .section-line{flex:1;height:1px;background:var(--border);max-width:200px}
+  .tag{font-family:var(--mono);font-size:11px;padding:4px 9px;background:var(--surface);border:1px solid var(--dim);color:var(--text);letter-spacing:.04em;transition:border-color .2s,color .2s}
+  .tag.hi{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.08)}
+  .tag.hi2{border-color:var(--accent2);color:var(--accent2);background:rgba(6,182,212,.08)}
+  .btn-primary{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;border:none;padding:12px 28px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s,transform .15s}
+  .btn-primary:hover{background:#2563eb;transform:translateY(-1px)}
+  .btn-outline{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--text);border:1px solid var(--dim);padding:12px 28px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:border-color .2s,color .2s,transform .15s}
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+
+  /* PAGES */
+  .page{display:none;min-height:100vh}
+  .page.active{display:block}
+
+  /* HERO */
+  #hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 6vw 80px}
+  .hero-tag{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:1.5rem;display:flex;align-items:center;gap:10px}
+  .hero-tag::before{content:'';display:block;width:32px;height:1px;background:var(--accent2)}
+  .hero-name{font-family:var(--mono);font-size:clamp(2.8rem,7vw,6rem);font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--text);margin-bottom:.5rem}
+  .hero-name span{color:var(--accent);display:block}
+  .hero-role{font-family:var(--mono);font-size:clamp(.9rem,1.8vw,1.1rem);color:var(--muted);margin-bottom:2.5rem;letter-spacing:.02em}
+  .hero-role em{color:var(--accent2);font-style:normal}
+  .hero-desc{max-width:560px;font-size:1rem;color:#8fa3bb;line-height:1.75;margin-bottom:3rem}
+  .hero-desc strong{color:var(--text);font-weight:500}
+  .hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:5rem}
+  .hero-stats{display:flex;gap:3rem;flex-wrap:wrap;padding-top:2.5rem;border-top:1px solid var(--border)}
+  .stat{display:flex;flex-direction:column;gap:4px}
+  .stat-val{font-family:var(--mono);font-size:1.8rem;font-weight:700;color:var(--text);line-height:1}
+  .stat-val span{color:var(--accent)}
+  .stat-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .hero-corner{position:absolute;top:80px;right:6vw;width:280px;height:280px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;opacity:.6}
+  .hero-corner::before{content:'';position:absolute;inset:16px;border:1px solid var(--dim)}
+  .hero-corner-inner{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center;letter-spacing:.1em;line-height:2}
+  .hero-corner-inner .big{display:block;font-size:2.5rem;font-weight:700;color:var(--accent);letter-spacing:-.02em;line-height:1;margin-bottom:8px}
+  .scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);animation:bounce 2s ease-in-out infinite}
+  .scroll-hint::after{content:'';display:block;width:1px;height:32px;background:linear-gradient(to bottom,var(--muted),transparent)}
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+  /* ABOUT */
+  #about{position:relative;z-index:1;padding:100px 6vw;border-top:1px solid var(--border);background:var(--bg2)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+  .about-text p{color:#8fa3bb;line-height:1.8;margin-bottom:1.2rem;font-size:.95rem}
+  .about-text p strong{color:var(--text);font-weight:500}
+  .location-tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent2);margin-bottom:1.5rem}
+  .location-tag::before{content:'◈';font-size:10px}
+  .skills-panel{display:flex;flex-direction:column;gap:1.5rem}
+  .skill-cat-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+  .skill-tags{display:flex;flex-wrap:wrap;gap:6px}
+  .certs-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+  .cert-badge{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface);border:1px solid var(--dim)}
+  .cert-icon{color:var(--accent)}
+  .cert-info{display:flex;flex-direction:column;gap:1px}
+  .cert-name{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text);letter-spacing:.04em}
+  .cert-sub{font-size:10px;color:var(--muted);letter-spacing:.04em}
+
+  /* PROJECTS */
+  #projects{position:relative;z-index:1;padding:100px 6vw;border-top:1px solid var(--border);background:var(--bg)}
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5px}
+  .proj-card{background:var(--bg2);border:1px solid var(--border);padding:2rem;position:relative;overflow:hidden;transition:border-color .25s,background .25s;cursor:pointer}
+  .proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+  .proj-card:hover{border-color:var(--dim);background:var(--bg3)}
+  .proj-card:hover::before{transform:scaleX(1)}
+  .proj-card.featured{border-color:var(--dim)}
+  .proj-card.featured::before{transform:scaleX(1);background:var(--accent2)}
+  .proj-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:1rem}
+  .proj-icon{width:36px;height:36px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .proj-icon svg{stroke:var(--accent)}
+  .proj-icon.cyan{background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.2)}
+  .proj-icon.cyan svg{stroke:var(--accent2)}
+  .proj-date{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
+  .proj-name{font-family:var(--mono);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.35rem;line-height:1.3}
+  .proj-sub{font-size:11px;color:var(--accent);font-family:var(--mono);letter-spacing:.05em;margin-bottom:.9rem;text-transform:uppercase}
+  .proj-desc{font-size:.88rem;color:#8fa3bb;line-height:1.7;margin-bottom:1.2rem}
+  .proj-desc strong{color:var(--text);font-weight:500}
+  .proj-metric{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15);margin-bottom:1rem}
+  .proj-metric.cyan{background:rgba(6,182,212,.06);border-color:rgba(6,182,212,.15)}
+  .proj-metric-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent)}
+  .proj-metric.cyan .proj-metric-val{color:var(--accent2)}
+  .proj-metric-label{font-size:11px;color:var(--muted)}
+  .proj-tools{display:flex;flex-wrap:wrap;gap:5px}
+  .proj-cta{display:flex;align-items:center;gap:6px;margin-top:1.2rem;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);transition:gap .2s}
+  .proj-card:hover .proj-cta{gap:10px}
+
+  /* EXPERIENCE */
+  #experience{position:relative;z-index:1;padding:100px 6vw;border-top:1px solid var(--border);background:var(--bg2)}
+  .timeline{position:relative;padding-left:2rem}
+  .timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:var(--border)}
+  .tl-item{position:relative;padding-bottom:3.5rem}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-dot{position:absolute;left:-2rem;top:6px;width:9px;height:9px;background:var(--accent);border:2px solid var(--bg2);transform:translateX(-4px)}
+  .tl-dot.dim{background:var(--dim)}
+  .tl-meta{display:flex;align-items:center;gap:12px;margin-bottom:.6rem;flex-wrap:wrap}
+  .tl-date{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.06em}
+  .tl-location{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .tl-title{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.2rem}
+  .tl-org{font-size:.9rem;color:#8fa3bb;margin-bottom:1rem}
+  .tl-org strong{color:var(--text);font-weight:500}
+  .tl-bullets{display:flex;flex-direction:column;gap:.65rem}
+  .tl-bullet{display:flex;gap:10px;font-size:.9rem;color:#8fa3bb;line-height:1.65}
+  .tl-bullet::before{content:'▸';color:var(--accent);flex-shrink:0;margin-top:1px;font-size:10px}
+  .tl-bullet strong{color:var(--text);font-weight:500}
+  .tl-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:1rem}
+
+  /* CONTACT */
+  #contact{position:relative;z-index:1;padding:100px 6vw;border-top:1px solid var(--border);background:var(--bg)}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+  .contact-heading{font-family:var(--mono);font-size:clamp(1.6rem,4vw,2.8rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1.2rem}
+  .contact-heading span{color:var(--accent)}
+  .contact-sub{font-size:.95rem;color:#8fa3bb;line-height:1.75;margin-bottom:2rem}
+  .contact-links{display:flex;flex-direction:column;gap:.75rem}
+  .contact-link{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);text-decoration:none;transition:border-color .2s,background .2s}
+  .contact-link:hover{border-color:var(--accent);background:var(--bg3)}
+  .contact-link-icon{color:var(--accent);flex-shrink:0}
+  .contact-link-label{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+  .contact-link-val{font-size:.9rem;color:var(--text);margin-top:1px}
+  .contact-avail{background:var(--surface);border:1px solid var(--border);padding:2rem}
+  .avail-heading{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:1.2rem}
+  .avail-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+  .avail-row:last-child{border-bottom:none}
+  .avail-label{color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+  .avail-val{color:var(--text);font-size:.88rem}
+  .avail-badge{font-family:var(--mono);font-size:10px;padding:3px 8px;letter-spacing:.06em}
+  .avail-badge.green{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:var(--accent2)}
+  .avail-badge.amber{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);color:#fbbf24}
+
+  /* FOOTER */
+  footer{position:relative;z-index:1;padding:2rem 6vw;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .footer-copy{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .footer-links{display:flex;gap:1.5rem}
+  .footer-links a{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:.06em;transition:color .2s}
+  .footer-links a:hover{color:var(--accent)}
+
+  /* ═══ PROJECT DETAIL PAGE ═══ */
+  #project-detail{position:relative;z-index:1;min-height:100vh;padding:100px 6vw 80px}
+  .detail-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s;margin-bottom:3rem;background:none;border:none}
+  .detail-back:hover{color:var(--accent)}
+  .detail-hero{border-bottom:1px solid var(--border);padding-bottom:3rem;margin-bottom:3rem}
+  .detail-tag{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+  .detail-tag::before{content:'';display:block;width:24px;height:1px;background:var(--accent2)}
+  .detail-title{font-family:var(--mono);font-size:clamp(1.8rem,5vw,3.5rem);font-weight:700;line-height:1.1;color:var(--text);margin-bottom:1rem}
+  .detail-meta-row{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+  .detail-meta{display:flex;flex-direction:column;gap:3px}
+  .detail-meta-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .detail-meta-val{font-family:var(--mono);font-size:13px;color:var(--text)}
+  .detail-grid{display:grid;grid-template-columns:1fr 340px;gap:4rem;align-items:start}
+  .detail-body h3{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--accent);margin:2rem 0 .75rem;letter-spacing:.04em;text-transform:uppercase}
+  .detail-body h3:first-child{margin-top:0}
+  .detail-body p{color:#8fa3bb;line-height:1.8;margin-bottom:1rem;font-size:.95rem}
+  .detail-body p strong{color:var(--text);font-weight:500}
+  .detail-body ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.2rem}
+  .detail-body ul li{display:flex;gap:10px;font-size:.9rem;color:#8fa3bb;line-height:1.65}
+  .detail-body ul li::before{content:'▸';color:var(--accent);flex-shrink:0;font-size:10px;margin-top:2px}
+  .detail-body ul li strong{color:var(--text);font-weight:500}
+  .detail-sidebar{display:flex;flex-direction:column;gap:1.5rem}
+  .sidebar-card{background:var(--surface);border:1px solid var(--border);padding:1.25rem}
+  .sidebar-card-title{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)}
+  .metric-big{display:flex;flex-direction:column;gap:4px;margin-bottom:.8rem}
+  .metric-big:last-child{margin-bottom:0}
+  .metric-big-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--accent);line-height:1}
+  .metric-big-val.cyan{color:var(--accent2)}
+  .metric-big-label{font-size:11px;color:var(--muted)}
+  .detail-tools{display:flex;flex-wrap:wrap;gap:6px}
+
+  /* ANIMATIONS */
+  .fade-up{opacity:0;transform:translateY(20px);animation:fadeUp .7s ease forwards}
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+  .delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.35s}
+  .delay-4{animation-delay:.5s}.delay-5{animation-delay:.65s}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+
+  @media(max-width:768px){
+    .about-grid,.contact-grid,.detail-grid{grid-template-columns:1fr;gap:3rem}
+    .hero-corner{display:none}
+    .projects-grid{grid-template-columns:1fr}
+    .detail-sidebar{order:-1}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo" onclick="showMain()">GC_PORTFOLIO.exe</span>
+  <ul class="nav-links">
+    <li><a href="#hero" onclick="showMain()">Home</a></li>
+    <li><a href="#about" onclick="showMain()">About</a></li>
+    <li><a href="#projects" onclick="showMain()">Projects</a></li>
+    <li><a href="#experience" onclick="showMain()">Experience</a></li>
+    <li><a href="#contact" onclick="showMain()">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════ MAIN PAGE ═══════════════ -->
+<div id="main-page" class="page active">
+
+  <section id="hero">
+    <div class="hero-corner">
+      <div class="hero-corner-inner"><span class="big">FEA</span>STRUCTURAL<br>SIMULATION<br>SPECIALIST</div>
+    </div>
+    <div class="hero-tag fade-up">Mechanical Engineering — Hochschule Rhein-Waal</div>
+    <h1 class="hero-name fade-up delay-1">Gift<span>Chidewu.</span></h1>
+    <p class="hero-role fade-up delay-2">B.Sc. Candidate &nbsp;/&nbsp; <em>FEM/FEA &amp; CAD</em> &nbsp;/&nbsp; Kleve, Germany</p>
+    <p class="hero-desc fade-up delay-3"><strong>8 validated engineering projects.</strong> Static and fatigue FEA to FKM guideline. Bevel gearbox design with full bearing &amp; shaft analysis. SolidWorks CSWA certified. 14 months hands-on fabrication and procurement.</p>
+    <div class="hero-ctas fade-up delay-4">
+      <a href="#projects" class="btn-primary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>View Projects</a>
+      <a href="#" class="btn-outline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download CV</a>
+    </div>
+    <div class="hero-stats fade-up delay-5">
+      <div class="stat"><div class="stat-val">8<span>+</span></div><div class="stat-label">Projects</div></div>
+      <div class="stat"><div class="stat-val">14<span>mo</span></div><div class="stat-label">Industry Exp.</div></div>
+      <div class="stat"><div class="stat-val">±0.3<span>mm</span></div><div class="stat-label">Scan Accuracy</div></div>
+      <div class="stat"><div class="stat-val">2×10<span>⁶</span></div><div class="stat-label">Fatigue Cycles</div></div>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </section>
+
+  <section id="about">
+    <div class="section-header reveal"><span class="section-num">01.</span><h2 class="section-title">About</h2><div class="section-line"></div></div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="location-tag">Kleve, Germany — Available for Internship 2025/26</div>
+        <p>I'm a 3rd-year Mechanical Engineering student specialising in <strong>structural simulation and precision CAD design</strong>. My work spans static and fatigue FEA using ANSYS Workbench following the FKM guideline, bevel gearbox design with full bearing life calculations, and ISO-compliant GD&amp;T manufacturing drawings.</p>
+        <p>Before university I spent 14 months as an engineering intern at <strong>Atlanta Drilling</strong> in Zimbabwe — hands-on fabrication, procurement, and plant maintenance across a 6-vehicle fleet. That grounding in real hardware informs how I approach simulation: I design to be built, not just modelled.</p>
+        <p>Outside engineering I build <strong>LEGO Technic multi-stage gear transmissions</strong> independently, play competitive football, and drum in the university band.</p>
+        <div class="certs-row">
+          <div class="cert-badge">
+            <svg class="cert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            <div class="cert-info"><span class="cert-name">CSWA</span><span class="cert-sub">SolidWorks — Dassault Systèmes</span></div>
+          </div>
+          <div class="cert-badge">
+            <svg class="cert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            <div class="cert-info"><span class="cert-name">TOEFL C1</span><span class="cert-sub">English — Full Professional</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="skills-panel reveal">
+        <div class="skill-category">
+          <div class="skill-cat-label">CAD / PLM</div>
+          <div class="skill-tags"><span class="tag hi">SolidWorks</span><span class="tag hi">CATIA V5</span><span class="tag">GD&amp;T</span><span class="tag">2D Drawings</span><span class="tag">PDM</span><span class="tag">Assembly Modelling</span></div>
+        </div>
+        <div class="skill-category" style="margin-top:1.2rem">
+          <div class="skill-cat-label">FEM / Simulation</div>
+          <div class="skill-tags"><span class="tag hi">ANSYS Workbench</span><span class="tag hi2">FKM Guideline</span><span class="tag hi2">Fatigue Analysis</span><span class="tag">Mesh Optimisation</span><span class="tag">Static Structural</span></div>
+        </div>
+        <div class="skill-category" style="margin-top:1.2rem">
+          <div class="skill-cat-label">Standards</div>
+          <div class="skill-tags"><span class="tag">DIN EN / ISO</span><span class="tag">DIN 6558</span><span class="tag">DIN 7154</span><span class="tag">FKM Fatigue</span><span class="tag">DFM Principles</span></div>
+        </div>
+        <div class="skill-category" style="margin-top:1.2rem">
+          <div class="skill-cat-label">Programming &amp; Tools</div>
+          <div class="skill-tags"><span class="tag">MATLAB</span><span class="tag">Python</span><span class="tag">MeshLab</span><span class="tag">VXelements</span><span class="tag">HandySCAN 300</span></div>
+        </div>
+        <div class="skill-category" style="margin-top:1.2rem">
+          <div class="skill-cat-label">Manufacturing</div>
+          <div class="skill-tags"><span class="tag">Sheet Metal</span><span class="tag">Injection Moulding</span><span class="tag">Welding</span><span class="tag">Plasma Cutting</span><span class="tag">Machining</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-header reveal"><span class="section-num">02.</span><h2 class="section-title">Projects</h2><div class="section-line"></div></div>
+    <div class="projects-grid">
+
+      <!-- BEVEL GEARBOX — FEATURED -->
+      <div class="proj-card featured reveal" onclick="openProject('bevel')">
+        <div class="proj-header">
+          <div class="proj-icon cyan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+          <span class="proj-date">Jun 2025</span>
+        </div>
+        <div class="proj-name">Bevel Gearbox Design</div>
+        <div class="proj-sub">Full mechanical design &amp; analysis</div>
+        <p class="proj-desc">Complete 90° bevel gearbox design for a <strong>1.5:1 transmission ratio</strong> (16/24 teeth, Module 3). Full force analysis, shaft stress, bearing selection, parallel key connection to DIN 6558, sealing, housing, and SolidWorks assembly with interference check.</p>
+        <div class="proj-metric cyan">
+          <span class="proj-metric-val">L10 &gt; 2M hrs</span>
+          <span class="proj-metric-label">bearing life · SF ≥ 1.5 all shafts · 650 rpm</span>
+        </div>
+        <div class="proj-tools"><span class="tag hi2">SolidWorks</span><span class="tag hi">DIN 6558</span><span class="tag">Bearing Calc.</span><span class="tag">C45 / 42CrMo4</span><span class="tag">Tapered Roller</span></div>
+        <div class="proj-cta"><span>View full project</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+
+      <!-- RACING SEAT -->
+      <div class="proj-card featured reveal" onclick="openProject('racing')">
+        <div class="proj-header">
+          <div class="proj-icon cyan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg></div>
+          <span class="proj-date">Jan 2026</span>
+        </div>
+        <div class="proj-name">Racing Car Seat Shell</div>
+        <div class="proj-sub">Structural &amp; Fatigue FEM/FEA</div>
+        <p class="proj-desc">FKM-compliant static and fatigue FEA of an Al7075-T6 seat shell under <strong>9g circuit</strong> and <strong>20g crash</strong> load cases. 4-component assembly including CFRP supports and rubber cushion.</p>
+        <div class="proj-metric cyan">
+          <span class="proj-metric-val">SF &gt; 1.5</span>
+          <span class="proj-metric-label">static · 2×10⁶ fatigue cycles validated</span>
+        </div>
+        <div class="proj-tools"><span class="tag hi2">ANSYS</span><span class="tag hi">SolidWorks</span><span class="tag">FKM Guideline</span><span class="tag">Al7075-T6</span></div>
+        <div class="proj-cta"><span>View full project</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+
+      <!-- REVERSE ENGINEERING -->
+      <div class="proj-card reveal" onclick="openProject('reverse')">
+        <div class="proj-header">
+          <div class="proj-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div>
+          <span class="proj-date">2023</span>
+        </div>
+        <div class="proj-name">Reverse Engineering</div>
+        <div class="proj-sub">Heat Pump Tumble Dryer Panel</div>
+        <p class="proj-desc">Reverse engineered a <strong>0107 fascia control panel</strong> using HandySCAN 300 (0.04 mm accuracy, 205,000 measurements/s). Rebuilt parametric SolidWorks model from STL mesh, designed injection mould cavity and core.</p>
+        <div class="proj-metric">
+          <span class="proj-metric-val">0.04mm</span>
+          <span class="proj-metric-label">scanner accuracy · STL → parametric CAD → mould</span>
+        </div>
+        <div class="proj-tools"><span class="tag hi">SolidWorks</span><span class="tag">VXelements</span><span class="tag">HandySCAN 300</span><span class="tag">ScanTo3D</span><span class="tag">Mould Design</span></div>
+        <div class="proj-cta"><span>View full project</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+
+      <!-- PLANTON CHAIR -->
+      <div class="proj-card reveal" onclick="openProject('planton')">
+        <div class="proj-header">
+          <div class="proj-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></div>
+          <span class="proj-date">2024</span>
+        </div>
+        <div class="proj-name">Planton Shell Chair</div>
+        <div class="proj-sub">Static &amp; Fatigue FEA</div>
+        <p class="proj-desc">FKM-compliant FEA in ANSYS under 120 kg load to 2×10⁶ fatigue cycles. Mesh quality refined to element score &gt;0.85, reducing interpolation error by 12%.</p>
+        <div class="proj-metric"><span class="proj-metric-val">SF = 1.8</span><span class="proj-metric-label">against yield at critical hotspot</span></div>
+        <div class="proj-tools"><span class="tag hi">ANSYS</span><span class="tag">FKM Guideline</span><span class="tag">Fatigue Analysis</span></div>
+        <div class="proj-cta"><span>View full project</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+
+      <!-- GEARBOX -->
+      <div class="proj-card reveal" onclick="openProject('gearbox')">
+        <div class="proj-header">
+          <div class="proj-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg></div>
+          <span class="proj-date">2024</span>
+        </div>
+        <div class="proj-name">Compact Gearbox Design</div>
+        <div class="proj-sub">Shaft, Bearing &amp; Housing</div>
+        <p class="proj-desc">Single-stage gearbox transmitting 45 Nm. Shaft stress analysis, bearing life calculation L10 &gt; 10,000 h, interference-fit selection to DIN 7154, full ISO GD&amp;T drawings.</p>
+        <div class="proj-metric"><span class="proj-metric-val">L10 &gt; 10,000h</span><span class="proj-metric-label">bearing life · SF ≥ 1.5</span></div>
+        <div class="proj-tools"><span class="tag hi">SolidWorks</span><span class="tag">DIN 7154</span><span class="tag">GD&amp;T</span></div>
+        <div class="proj-cta"><span>View full project</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+
+      <!-- SCISSOR LIFT + OTHER -->
+      <div class="proj-card reveal" onclick="openProject('other')">
+        <div class="proj-header">
+          <div class="proj-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"><path d="M3 7h18M3 12h18M3 17h18"/></svg></div>
+          <span class="proj-date">2023–24</span>
+        </div>
+        <div class="proj-name">More Projects</div>
+        <div class="proj-sub">Scissor Lift · Handcart · Rain Gutter Cleaner</div>
+        <p class="proj-desc">Scissor lift (800 N, 600 mm travel, SF ≥ 2.0) · Motorised handcart (200 kg payload, 5-person team, 10 weeks) · Automated gutter cleaner (3 m reach, IP54, ANSYS-validated frame).</p>
+        <div class="proj-metric"><span class="proj-metric-val">3 projects</span><span class="proj-metric-label">mechanism · multi-disciplinary · concept to prototype</span></div>
+        <div class="proj-tools"><span class="tag hi">SolidWorks</span><span class="tag">ANSYS</span><span class="tag">Kinematics</span><span class="tag">Cross-disciplinary</span></div>
+        <div class="proj-cta"><span>View full projects</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-header reveal"><span class="section-num">03.</span><h2 class="section-title">Experience</h2><div class="section-line"></div></div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-meta"><span class="tl-date">Jun 2021 — Aug 2022</span><span class="tl-location">◈ Harare, Zimbabwe</span></div>
+        <div class="tl-title">Engineering Intern</div>
+        <div class="tl-org"><strong>Atlanta Drilling</strong> — Fabrication, Procurement &amp; Plant Maintenance</div>
+        <div class="tl-bullets">
+          <div class="tl-bullet">Improved first-time repair rate across a <strong>6-vehicle fleet</strong>, reducing unplanned downtime by an estimated <strong>15%</strong> over 14 months through scheduled preventive maintenance.</div>
+          <div class="tl-bullet">Reduced procurement lead time by ~<strong>20%</strong> by streamlining purchase orders and establishing direct supplier channels for 3 key consumable categories.</div>
+          <div class="tl-bullet">Delivered fabrication components to drawing tolerance <strong>±0.5 mm</strong> using welding, machining, and plasma cutting across <strong>4 live site projects</strong>.</div>
+          <div class="tl-bullet">Supported tender preparation for <strong>2 contracts</strong>, compiling technical documentation and supplier quotation packs.</div>
+        </div>
+        <div class="tl-tags"><span class="tag">Fabrication</span><span class="tag">Procurement</span><span class="tag">Welding</span><span class="tag">Plasma Cutting</span><span class="tag">Tender Prep</span></div>
+      </div>
+      <div class="tl-item reveal" style="padding-top:1rem">
+        <div class="tl-dot dim"></div>
+        <div class="tl-meta"><span class="tl-date">Oct 2022 — Present</span><span class="tl-location">◈ Kleve, Germany</span></div>
+        <div class="tl-title">B.Sc. Mechanical Engineering</div>
+        <div class="tl-org"><strong>Hochschule Rhein-Waal</strong> — Expected graduation 2026</div>
+        <div class="tl-bullets">
+          <div class="tl-bullet">8 graded engineering projects in FEA, gearbox design, CAD, manufacturing, and mechanism design.</div>
+          <div class="tl-bullet">SolidWorks CSWA certified (Dassault Systèmes, 2024).</div>
+        </div>
+        <div class="tl-tags"><span class="tag hi">ANSYS</span><span class="tag hi">SolidWorks</span><span class="tag">CATIA V5</span><span class="tag">MATLAB</span><span class="tag">FKM</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-header reveal"><span class="section-num">04.</span><h2 class="section-title">Contact</h2><div class="section-line"></div></div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <h3 class="contact-heading">Let's work<span> together.</span></h3>
+        <p class="contact-sub">I'm actively seeking a mandatory engineering internship in Germany — aerospace, automotive, clean energy, or high-tech manufacturing. If you're hiring or know someone who is, I'd love to connect.</p>
+        <div class="contact-links">
+          <a href="mailto:chidewugift@gmail.com" class="contact-link"><svg class="contact-link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><div><div class="contact-link-label">Email</div><div class="contact-link-val">chidewugift@gmail.com</div></div></a>
+          <a href="https://linkedin.com/in/gift-chidewu-55196825b" class="contact-link" target="_blank"><svg class="contact-link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg><div><div class="contact-link-label">LinkedIn</div><div class="contact-link-val">gift-chidewu-55196825b</div></div></a>
+          <a href="tel:+491791121219" class="contact-link"><svg class="contact-link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg><div><div class="contact-link-label">Phone</div><div class="contact-link-val">+49 179 112 1219</div></div></a>
+        </div>
+      </div>
+      <div class="contact-avail reveal">
+        <div class="avail-heading">◈ Availability &amp; Status</div>
+        <div class="avail-row"><span class="avail-label">Status</span><span class="avail-badge green">Open to offers</span></div>
+        <div class="avail-row"><span class="avail-label">Location</span><span class="avail-val">Kleve, Germany</span></div>
+        <div class="avail-row"><span class="avail-label">Internship type</span><span class="avail-val">Pflichtpraktikum (mandatory)</span></div>
+        <div class="avail-row"><span class="avail-label">Start availability</span><span class="avail-val">Flexible — 2025 / 2026</span></div>
+        <div class="avail-row"><span class="avail-label">Duration</span><span class="avail-val">Min. 12 weeks</span></div>
+        <div class="avail-row"><span class="avail-label">Target sectors</span><span class="avail-val">Aerospace · Automotive · Energy</span></div>
+        <div class="avail-row"><span class="avail-label">Languages</span><span class="avail-val">English C1 · German A2→B1</span></div>
+        <div class="avail-row" style="border-bottom:none"><span class="avail-label">Work permit</span><span class="avail-badge green">EU student visa (DE)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-copy">© 2026 Gift Chidewu — Kleve, Germany</span>
+    <div class="footer-links"><a href="#hero">Top</a><a href="mailto:chidewugift@gmail.com">Email</a><a href="https://linkedin.com/in/gift-chidewu-55196825b" target="_blank">LinkedIn</a></div>
+  </footer>
+</div><!-- end main-page -->
+
+<!-- ═══════════════ PROJECT DETAIL PAGE ═══════════════ -->
+<div id="detail-page" class="page">
+  <section id="project-detail">
+    <button class="detail-back" onclick="closeProject()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      Back to projects
+    </button>
+    <div id="detail-content"></div>
+  </section>
+</div>
+
+<script>
+// ── Scroll reveal
+const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── Page switching
+function showMain(){
+  document.getElementById('main-page').classList.add('active');
+  document.getElementById('detail-page').classList.remove('active');
+  window.scrollTo(0,0);
+}
+function closeProject(){
+  showMain();
+  setTimeout(()=>{document.getElementById('projects').scrollIntoView({behavior:'smooth'})},100);
+}
+
+// ── Project data
+const projects = {
+
+  bevel: {
+    tag:'Gearbox Design · Jun 2025',
+    title:'Bevel Gearbox Design',
+    meta:[
+      {label:'Submission Date',val:'27 June 2025'},
+      {label:'Supervisor',val:'Karsten Schacky'},
+      {label:'Institution',val:'Hochschule Rhein-Waal'},
+      {label:'Transmission Ratio',val:'1.5:1 (16/24 teeth)'},
+      {label:'Module',val:'3'},
+      {label:'Input Speed',val:'650 rpm'},
+    ],
+    body:`
+      <h3>Project Overview</h3>
+      <p>Complete mechanical design of a 90° bevel gearbox based on article number <strong>361 144 800</strong> (driving) and <strong>361 144 900</strong> (driven). The project covered every stage from gear force analysis through to SolidWorks assembly, interference check, and ISO-compliant manufacturing drawings.</p>
+
+      <h3>Gear Force Analysis</h3>
+      <p>Pitch cone angles were calculated from the tooth ratio (16/24): <strong>δ₁ = 33.69°</strong> (driver) and <strong>δ₂ = 56.31°</strong> (driven). Assuming a 20° normal pressure angle per Mäedler catalogue:</p>
+      <ul>
+        <li>Tangential force on driving pinion: <strong>Ft₁ = 245.83 N</strong> (T = 5.9 Nm, pitch diameter 48 mm)</li>
+        <li>Radial force: <strong>Fr = 74.4 N</strong></li>
+        <li>Axial force: <strong>Fa = 49.63 N</strong></li>
+        <li>Driven shaft tangential force: <strong>Ft₂ = 247.22 N</strong> (T = 8.9 Nm, pitch diameter 72 mm)</li>
+      </ul>
+
+      <h3>Shaft Stress Analysis</h3>
+      <p><strong>Driving shaft</strong> (C45 steel, ø15 mm, 100 mm long): Bending stress 56.06 MPa, torsional stress 26.86 MPa, von Mises equivalent 66.64 MPa — well below C45 yield strength of 245 MPa with application factor KA = 1.5.</p>
+      <p><strong>Driven shaft</strong> (42CrMo4 steel, ø20 mm primary / ø24 mm bearing section): Bending stress 71.06 MPa, torsional stress 9.09 MPa, von Mises 71.64 MPa — well within 42CrMo4 yield of 500 MPa.</p>
+
+      <h3>Bearing Selection &amp; Life Calculation</h3>
+      <p>Four bearings selected for the two-shaft arrangement (fixed + floating per shaft):</p>
+      <ul>
+        <li><strong>Bearing A (fixed, driving):</strong> Tapered roller bearing 30302 (ø15×42 mm) — L10h = 55,836 hours at 650 rpm</li>
+        <li><strong>Bearing B (floating, driving):</strong> Angular contact ball bearing 7302B (ø15×42 mm) — L10h = 135,352 hours</li>
+        <li><strong>Bearing C (fixed, driven):</strong> Tapered roller bearing 32204 (ø20×47 mm) — L10h = 2,083,793 hours</li>
+        <li><strong>Bearing D (floating, driven):</strong> Angular contact ball bearing 7204B (ø20×47 mm) — L10h = 106,790 hours</li>
+      </ul>
+      <p>All equivalent loads calculated with application factor fA = 1.1, service factor fLS = 1.2.</p>
+
+      <h3>Parallel Key Connection (DIN 6558)</h3>
+      <p>Driving shaft: <strong>5×5×20 mm key</strong>, permitted contact pressure 163.33 N/mm² (C45, SF = 1.5). Driven shaft: <strong>6×6×30 mm key</strong>. Loaded lengths (2.40 mm and 2.18 mm) verified below 1.3× shaft diameter limit using Method C — standard keys are adequate.</p>
+
+      <h3>Sealing &amp; Housing</h3>
+      <p><strong>Lubrication:</strong> Multi-purpose lithium-based grease — ideal for medium-speed enclosed gearboxes, offering thermal stability and water resistance.</p>
+      <p><strong>Sealing:</strong> Radial shaft seals and rubber lip seals around both shaft exits to prevent contamination ingress and lubricant loss.</p>
+      <p><strong>Housing:</strong> Cast iron selected for strength, vibration damping, thermal dissipation, machinability, and corrosion resistance.</p>
+
+      <h3>SolidWorks Assembly &amp; Drawings</h3>
+      <p>Full assembly modelled in SolidWorks with interference detection confirming zero component clashes across all 5 interference checks. Shaft drawing and multi-view assembly drawing produced to ISO standard with third-angle projection, title blocks, and revision control.</p>
+    `,
+    metrics:[
+      {val:'SF ≥ 1.5',label:'both shafts, all load cases',cyan:false},
+      {val:'L10 &gt; 55K hrs',label:'minimum bearing life (Bearing A)',cyan:false},
+      {val:'245.83 N',label:'peak tangential force (driving pinion)',cyan:true},
+      {val:'0 clashes',label:'SolidWorks interference check',cyan:true},
+    ],
+    tools:['SolidWorks','DIN 6558','DIN 720','Tapered Roller Bearings','C45 Steel','42CrMo4','FBD Analysis','ISO Drawings','Interference Check']
+  },
+
+  racing: {
+    tag:'FEM/FEA · Jan 2026',
+    title:'Racing Car Seat Shell — Strength Analysis',
+    meta:[
+      {label:'Load Case 1',val:'9g vertical circuit acceleration'},
+      {label:'Load Case 2',val:'20g rear crash impact'},
+      {label:'Max Driver Mass',val:'120 kg'},
+      {label:'Shell Material',val:'Al7075-T6 (1.5 mm)'},
+      {label:'Analysis Standard',val:'FKM Guideline'},
+      {label:'Tools',val:'ANSYS Workbench, SolidWorks'},
+    ],
+    body:`
+      <h3>Project Overview</h3>
+      <p>Static and fatigue FEA of a racing car seat shell assembly under two worst-case load scenarios. The analysis followed the FKM guideline for fatigue assessment and covered a full 4-component assembly to ensure all material interfaces were correctly represented.</p>
+
+      <h3>Assembly Definition</h3>
+      <ul>
+        <li><strong>Seat shell:</strong> Aluminium alloy Al7075-T6, 1.5 mm sheet thickness</li>
+        <li><strong>Carbon fibre reinforced plastic (CFRP) supports:</strong> E = 5 GPa, ν = 0.35 — glued to seat and rails</li>
+        <li><strong>Rails:</strong> Al7075-T6</li>
+        <li><strong>Head cushion:</strong> Soft rubber, E = 5 MPa, ν = 0.45</li>
+      </ul>
+
+      <h3>Load Case 1 — Circuit Driving (9g Vertical)</h3>
+      <p>Vertical acceleration of up to <strong>9g upward</strong> during circuit driving with a 120 kg driver. This is a <strong>fatigue-relevant load case</strong> — repeated thousands of times per race event. Cycle-life adequacy was verified to <strong>2 × 10⁶ cycles</strong> per FKM guideline, confirming the seat shell is safe over its design life.</p>
+
+      <h3>Load Case 2 — Rear Crash (20g)</h3>
+      <p>Rear impact accelerating the driver backwards into the seat at <strong>20g</strong>. This is a <strong>static worst-case</strong> scenario. Peak von Mises stress of approximately <strong>310 MPa</strong> was identified at the seat-rail interface, the critical stress concentration point. Safety factor was confirmed above 1.5 against Al7075-T6 yield strength.</p>
+
+      <h3>Mesh &amp; Boundary Conditions</h3>
+      <p>Mesh refinement applied at identified stress concentration regions (seat-rail interface, CFRP bond zones). Appropriate boundary conditions applied at rail mounting points simulating chassis attachment. Material models assigned per component with correct elastic moduli and Poisson ratios.</p>
+
+      <h3>Results Summary</h3>
+      <ul>
+        <li>Static safety factor &gt; 1.5 in crash load case — <strong>seat shell is structurally safe</strong></li>
+        <li>Fatigue cycle life validated to 2 × 10⁶ cycles under 9g circuit loading</li>
+        <li>Peak von Mises ~310 MPa at seat-rail interface (crash case)</li>
+        <li>CFRP supports carry axial loads effectively — bond interface within allowable limits</li>
+      </ul>
+    `,
+    metrics:[
+      {val:'SF &gt; 1.5',label:'static safety factor, crash case',cyan:true},
+      {val:'2×10⁶',label:'fatigue cycles validated (circuit load)',cyan:true},
+      {val:'~310 MPa',label:'peak von Mises at seat-rail interface',cyan:false},
+      {val:'9g / 20g',label:'load cases analysed',cyan:false},
+    ],
+    tools:['ANSYS Workbench','SolidWorks','FKM Guideline','Al7075-T6','CFRP','Static Structural','Fatigue Analysis','Mesh Refinement']
+  },
+
+  reverse: {
+    tag:'Reverse Engineering · 2023',
+    title:'Reverse Engineering — Heat Pump Tumble Dryer',
+    meta:[
+      {label:'Target Component',val:'0107 Fascia Control Panel'},
+      {label:'Scanner',val:'HandySCAN 300 by CREAFORM'},
+      {label:'Scanner Accuracy',val:'Up to 0.04 mm'},
+      {label:'Measurement Rate',val:'205,000 measurements/s'},
+      {label:'Module',val:'Virtual Product Design'},
+      {label:'Output',val:'CAD model + mould design'},
+    ],
+    body:`
+      <h3>Project Overview</h3>
+      <p>Group reverse engineering project targeting the <strong>0107 fascia control panel</strong> from a heat pump tumble dryer. The goal was to reconstruct a parametric CAD model from 3D scan data and design injection mould tooling — demonstrating how components can be redesigned for remanufacture without access to the original design files.</p>
+
+      <h3>3D Scanning Process</h3>
+      <p>The panel was scanned using the <strong>HandySCAN 300</strong> handheld laser scanner by CREAFORM — a professional-grade tool used in aerospace and automotive inspection. Key specifications:</p>
+      <ul>
+        <li>Accuracy: <strong>up to 0.04 mm</strong> (volumetric: 0.02 mm + 0.1 mm/m)</li>
+        <li>Measurement rate: <strong>205,000 measurements/second</strong></li>
+        <li>Light source: 3 red laser crosses (Class 2M, eye-safe)</li>
+        <li>Scanning area: 225 × 250 mm, stand-off distance 300 mm</li>
+        <li>Resolution: 0.1 mm</li>
+      </ul>
+      <p>Scan data was processed in <strong>VXelements</strong> (CREAFORM software) to generate a clean polygon mesh, then exported as an STL file.</p>
+
+      <h3>CAD Reconstruction in SolidWorks</h3>
+      <p>The STL mesh was imported into <strong>SolidWorks 2024</strong> as a Graphics Body using the <strong>ScanTo3D</strong> add-in. The reconstruction process involved:</p>
+      <ul>
+        <li>Mesh preparation and face count reduction to prevent crashes (complex curved geometry with bosses)</li>
+        <li>Origin and plane creation from scan geometry using ScanTo3D tools</li>
+        <li>Surface wizard used to extract curved surface patches from mesh data</li>
+        <li>Manual parametric reconstruction where surface resolution was insufficient</li>
+      </ul>
+      <p>The project highlighted a key limitation of 3D scanning: <strong>scan resolution directly limits model fidelity</strong> — curved features and small bosses lost quality through the mesh-to-surface pipeline, requiring manual correction.</p>
+
+      <h3>Mould Design</h3>
+      <p>Injection mould tooling was designed directly in SolidWorks using the built-in <strong>Cavity Tool</strong>:</p>
+      <ul>
+        <li>Model imported into assembly environment</li>
+        <li>Cavity created by sketching on the part and applying the Cavity tool</li>
+        <li><strong>Core and cavity both produced</strong> in the same assembly</li>
+        <li>DFM principles applied — draft angles and parting line selection for demoulding</li>
+      </ul>
+
+      <h3>Key Learnings</h3>
+      <ul>
+        <li>Scan quality and resolution are the primary constraint on reverse engineering accuracy</li>
+        <li>Curved, complex geometries require hybrid mesh-to-surface + manual parametric workflows</li>
+        <li>ScanTo3D surface wizard works best on simpler prismatic geometry</li>
+        <li>Mould design from reverse-engineered data is viable when model quality is sufficient</li>
+      </ul>
+    `,
+    metrics:[
+      {val:'0.04mm',label:'scanner accuracy (HandySCAN 300)',cyan:true},
+      {val:'205K/s',label:'measurement rate',cyan:true},
+      {val:'STL→CAD',label:'full pipeline: scan → mesh → parametric → mould',cyan:false},
+      {val:'Core+Cavity',label:'injection mould tooling designed',cyan:false},
+    ],
+    tools:['HandySCAN 300','VXelements','SolidWorks 2024','ScanTo3D','Cavity Tool','STL Processing','Mould Design','DFM Principles']
+  },
+
+  planton: {
+    tag:'FEM/FEA · 2024',
+    title:'Planton Shell Chair — Static &amp; Fatigue FEA',
+    meta:[
+      {label:'Load',val:'120 kg static'},
+      {label:'Fatigue Cycles',val:'2 × 10⁶'},
+      {label:'Standard',val:'FKM Guideline'},
+      {label:'Tool',val:'ANSYS Workbench'},
+      {label:'Critical SF',val:'1.8 against yield'},
+      {label:'Mesh Improvement',val:'12% error reduction'},
+    ],
+    body:`
+      <h3>Project Overview</h3>
+      <p>Finite Element Analysis of the Planton shell chair — a polymer shell seating structure — evaluating both static strength and fatigue performance. The analysis followed FKM guideline methodology and included systematic mesh quality improvement to ensure result accuracy.</p>
+      <h3>Loading &amp; Boundary Conditions</h3>
+      <ul>
+        <li>Static load: <strong>120 kg</strong> applied as distributed pressure on seat and back surfaces</li>
+        <li>Fatigue assessment: <strong>2 × 10⁶ load cycles</strong> per FKM guideline</li>
+        <li>Supports: fixed at floor contact points of chair legs</li>
+      </ul>
+      <h3>Results</h3>
+      <ul>
+        <li>Critical stress hotspot identified at shell-leg junction: <strong>SF = 1.8</strong> against yield</li>
+        <li>Fatigue cycle life adequate to 2 × 10⁶ cycles at all critical nodes</li>
+        <li>Mesh refinement to element quality &gt;0.85 in high-gradient zones reduced interpolation error by <strong>12%</strong> versus baseline coarse mesh</li>
+      </ul>
+    `,
+    metrics:[
+      {val:'SF = 1.8',label:'safety factor against yield at critical hotspot',cyan:false},
+      {val:'2×10⁶',label:'fatigue cycles — fully validated',cyan:false},
+      {val:'12%',label:'stress error reduction via mesh refinement',cyan:true},
+      {val:'&gt;0.85',label:'mesh element quality in critical zones',cyan:true},
+    ],
+    tools:['ANSYS Workbench','FKM Guideline','Static Structural','Fatigue Analysis','Mesh Optimisation','SolidWorks']
+  },
+
+  gearbox: {
+    tag:'Machine Elements · 2024',
+    title:'Compact Gearbox Design',
+    meta:[
+      {label:'Input Torque',val:'45 Nm'},
+      {label:'Safety Factor',val:'≥ 1.5 all components'},
+      {label:'Bearing Life',val:'L10 > 10,000 hours'},
+      {label:'Standard',val:'DIN 7154 interference fits'},
+      {label:'Drawings',val:'ISO GD&T compliant'},
+      {label:'Tool',val:'SolidWorks'},
+    ],
+    body:`
+      <h3>Project Overview</h3>
+      <p>Two-person team project to design a compact single-stage gearbox transmitting <strong>45 Nm input torque</strong> with a minimum safety factor of 1.5 across all load-bearing components.</p>
+      <h3>Shaft Analysis</h3>
+      <ul>
+        <li>Free body diagrams for both input and output shafts under combined bending and torsion</li>
+        <li>von Mises equivalent stress calculated and verified against material yield strength</li>
+        <li>Shaft diameters and shoulder dimensions sized to achieve SF ≥ 1.5</li>
+      </ul>
+      <h3>Bearing Selection</h3>
+      <ul>
+        <li>Deep groove ball bearings selected for both shaft positions</li>
+        <li>Basic rating life <strong>L10 &gt; 10,000 hours</strong> confirmed under calculated equivalent dynamic load</li>
+        <li>Interference fit tolerance selected to DIN 7154 for inner ring press-fit</li>
+      </ul>
+      <h3>Manufacturing Drawings</h3>
+      <p>ISO-compliant 2D manufacturing drawings produced for all machined features including full <strong>GD&T annotations</strong> — tolerances, surface finishes, and datum references for shaft, housing bore, and keyway dimensions.</p>
+      <h3>Assembly &amp; Interference Check</h3>
+      <p>Full 3D assembly modelled in SolidWorks with component interference detection, motion study confirming gear mesh, and exploded view for assembly documentation.</p>
+    `,
+    metrics:[
+      {val:'SF ≥ 1.5',label:'all load-bearing components',cyan:false},
+      {val:'L10 &gt; 10K h',label:'bearing life at rated load',cyan:false},
+      {val:'45 Nm',label:'input torque transmitted',cyan:true},
+      {val:'ISO GD&T',label:'fully annotated manufacturing drawings',cyan:true},
+    ],
+    tools:['SolidWorks','DIN 7154','GD&T','ISO Drawings','Shaft Analysis','Bearing Life Calc','Interference Fit','Machine Elements']
+  },
+
+  other: {
+    tag:'Multiple Projects · 2023–24',
+    title:'Scissor Lift · Motorised Handcart · Rain Gutter Cleaner',
+    meta:[
+      {label:'Scissor Lift Load',val:'800 N rated, SF ≥ 2.0'},
+      {label:'Lift Travel',val:'600 mm'},
+      {label:'Handcart Payload',val:'200 kg'},
+      {label:'Team Size',val:'5 disciplines'},
+      {label:'Gutter Cleaner Reach',val:'3 m'},
+      {label:'Weather Rating',val:'IP54'},
+    ],
+    body:`
+      <h3>Scissor Lift Design</h3>
+      <p>Designed and validated a scissor lift mechanism for an <strong>800 N rated load</strong> at SF ≥ 2.0, delivered as a complete product lifecycle documentation package.</p>
+      <ul>
+        <li>Kinematic analysis to determine joint forces throughout full travel range</li>
+        <li>FEM stress simulation in SolidWorks confirming SF ≥ 2.0 at rated load</li>
+        <li>600 mm lift travel validated via motion study</li>
+        <li>Complete assembly drawing set, BOM, and motion study documentation</li>
+      </ul>
+
+      <h3>Motorised Handcart</h3>
+      <p>Cross-disciplinary project delivering a <strong>200 kg payload motorised handcart</strong> within a 10-week timeline, collaborating with students from Electrical, Mechatronics, and Industrial Engineering.</p>
+      <ul>
+        <li>Mechanical: CAD modelling, structural frame analysis, wheel/axle sizing</li>
+        <li>Integration: hardware-software interface between drive motor and mechanical chassis</li>
+        <li>Full assembly delivered and validated within project schedule</li>
+      </ul>
+
+      <h3>Automated Rain Gutter Cleaner</h3>
+      <p>Ground-operated automated cleaning device designed from concept through prototype specification.</p>
+      <ul>
+        <li><strong>3 m reach</strong> from ground level — operator never needs a ladder</li>
+        <li>Pressurised water nozzle system with battery-powered drive unit</li>
+        <li><strong>IP54 weather resistance</strong> specified and validated in design</li>
+        <li>Structural frame stiffness validated via ANSYS FEA under operational loading</li>
+        <li>Safety features: dead-man switch, pressure relief valve, cable management</li>
+      </ul>
+    `,
+    metrics:[
+      {val:'800 N',label:'scissor lift rated load, SF ≥ 2.0',cyan:false},
+      {val:'200 kg',label:'motorised handcart payload',cyan:false},
+      {val:'3m reach',label:'rain gutter cleaner — ground operation',cyan:true},
+      {val:'IP54',label:'weather resistance rating',cyan:true},
+    ],
+    tools:['SolidWorks','ANSYS','Kinematics','BOM','Motion Study','Cross-disciplinary','Prototyping','IP54 Design']
+  }
+};
+
+function openProject(id){
+  const p = projects[id];
+  const metaHtml = p.meta.map(m=>`<div class="detail-meta"><div class="detail-meta-label">${m.label}</div><div class="detail-meta-val">${m.val}</div></div>`).join('');
+  const metricsHtml = p.metrics.map(m=>`<div class="metric-big"><div class="metric-big-val${m.cyan?' cyan':''}">${m.val}</div><div class="metric-big-label">${m.label}</div></div>`).join('');
+  const toolsHtml = p.tools.map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-hero">
+      <div class="detail-tag">${p.tag}</div>
+      <h1 class="detail-title">${p.title}</h1>
+      <div class="detail-meta-row">${metaHtml}</div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-body">${p.body}</div>
+      <div class="detail-sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-card-title">Key Metrics</div>
+          ${metricsHtml}
+        </div>
+        <div class="sidebar-card">
+          <div class="sidebar-card-title">Tools &amp; Technologies</div>
+          <div class="detail-tools">${toolsHtml}</div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('main-page').classList.remove('active');
+  document.getElementById('detail-page').classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
